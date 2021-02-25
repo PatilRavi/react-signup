@@ -18,52 +18,30 @@ class Wrapper extends Component {
     };
   }
 
-  handleClick = event => {
+  handleClick = async event => {
     console.log("cliced", event);
-    var apiBaseUrl = "https://demo-api.now.sh/users";
-    // console.log("values in register handler",role);
-    var self = this;
+    const apiBaseUrl = "https://demo-api.now.sh/users";
+    const self = this;
     //To be done:check for empty values before hitting submit
     if (
-      this.state.first_name.length > 0 &&
-      this.state.last_name.length > 0 &&
-      this.state.email.length > 0 &&
-      this.state.password.length > 7
+      self.state.first_name.length > 0 &&
+      self.state.last_name.length > 0 &&
+      self.state.email.length > 0 &&
+      self.state.password.length > 7
     ) {
-      var payload = {
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        userid: this.state.email,
-        password: this.state.password
-      };
-      axios
-        .post(apiBaseUrl + "/register", payload)
-        .then(function(response) {
-          console.log(response);
-          if (response.data.code === 200) {
-            //  console.log("registration successfull");
-            var loginscreen = [];
-            loginscreen.push(
-              <Login
-                parentContext={this}
-                appContext={self.props.appContext}
-                role={role}
-              />
-            );
-            var loginmessage = "Not Registered yet.Go to registration";
-            self.props.parentContext.setState({
-              loginscreen: loginscreen,
-              loginmessage: loginmessage,
-              buttonLabel: "Register",
-              isLogin: true
-            });
-          } else {
-            console.log("some error ocurred", response.data.code);
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      if ( self.state.password === self.state.first_name || self.state.password === self.state.last_name
+      ) {
+        alert("Password should not contain user’s first or last name");
+      } else {
+        const payload = {
+          first_name: self.state.first_name,
+          last_name: self.state.last_name,
+          userid: self.state.email,
+          password: self.state.password
+        };
+        const { status } = await axios.post(apiBaseUrl, payload)
+        status !== 200 ? console.log("Error ocurred", status) : console.log("registration successfull");        
+      }      
     } else {
       alert("Input field value is missing");
     }
