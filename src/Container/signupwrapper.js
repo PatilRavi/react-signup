@@ -12,7 +12,6 @@ class Wrapper extends Component {
   }
 
   handleClick = async (fName, lName, email, password) => {
-    console.log("clicked", fName, lName, email, password);
     const apiBaseUrl = "https://demo-api.now.sh/users";
 
     //To be done:check for empty values before hitting submit
